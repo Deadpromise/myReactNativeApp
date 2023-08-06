@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
+  inputFocused: {
+    borderColor: "#FF6C00",
+  },
   lastInput: {
     width: "100%",
     marginBottom: 0,
@@ -45,7 +48,6 @@ const styles = StyleSheet.create({
   passContainer: {
     display: "flex",
     width: "100%",
-    // flex: 1,
     flexDirection: "row",
     alignItems: "center",
     position: "relative",
@@ -57,13 +59,16 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 32,
   },
+  photoContainer: { position: "absolute", top: -60, zIndex: 1 },
   photo: {
-    width: 132,
+    width: 120,
     height: 120,
+    borderRadius: 16,
+  },
+  photoIcon: {
     position: "absolute",
-    top: -60,
-    zIndex: 1,
-    // marginTop: 203,
+    bottom: 8,
+    right: -12,
   },
   mainHeader: {
     color: "#212121",
@@ -89,6 +94,13 @@ const styles = StyleSheet.create({
   },
   mainButtonContainer: {
     marginTop: 43,
+    marginBottom: 16,
+  },
+  redirectText: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    color: "rgba(27, 67, 113, 1)",
+    textAlign: "center",
   },
 });
 
