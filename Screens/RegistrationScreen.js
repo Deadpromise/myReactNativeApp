@@ -3,72 +3,69 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Button,
+  // Button,
   Image,
+  ImageBackground,
   WebView,
 } from "react-native";
-// import SvgUri from "react-native-svg-uri";
+import { Button } from "@rneui/themed";
 import { useState } from "react";
+import styles from "./styles";
 import AddPhoto from "../images/add-photo.png";
 import PlusIcon from "../images/add.svg";
+
+const bgImage = require("../images/Phot-BG.png");
 
 const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //   const svgUri = require("../images/facebook.svg");
   return (
-    <View>
-      <View>
-        <Image source={AddPhoto} style={styles.photo}></Image>
-        {/* <Image source={svgUri}></Image> */}
-        {/* <SvgUri
-          width={24}
-          height={24}
-          source={require("../images/facebook.svg")}
-        /> */}
-        <Text>Реєстрація</Text>
-        <TextInput
-          styles={styles.input}
-          placeholder="Логін"
-          onChangeText={setLogin}
-          value={login}
-        ></TextInput>
-        <TextInput
-          styles={styles.input}
-          placeholder="Адреса електронної пошти"
-          onChangeText={setEmail}
-          value={email}
-        ></TextInput>
-        <TextInput
-          styles={styles.input}
-          placeholder="Пароль"
-          onChangeText={setPassword}
-          value={password}
-        ></TextInput>
-        <Text>Показати</Text>
-        <Button title="Зареєстуватися"></Button>
-        <Text>
-          Вже є акаунт? <Text>Увійти</Text>
-        </Text>
-      </View>
+    <View style={styles.mainContainer}>
+      <ImageBackground source={bgImage} imageStyle={styles.bgContainer}>
+        <View style={styles.secondaryContainer}>
+          <Image source={AddPhoto} style={styles.photo}></Image>
+          <View style={styles.formContainer}>
+            <Text style={styles.mainHeader}>Реєстрація</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Логін"
+              placeholderTextColor="#E8E8E8"
+              onChangeText={setLogin}
+              value={login}
+            ></TextInput>
+            <TextInput
+              style={styles.input}
+              placeholder="Адреса електронної пошти"
+              placeholderTextColor="#E8E8E8"
+              onChangeText={setEmail}
+              value={email}
+            ></TextInput>
+            <View style={styles.passContainer}>
+              <TextInput
+                style={[styles.input, styles.lastInput]}
+                placeholder="Пароль"
+                placeholderTextColor="#E8E8E8"
+                onChangeText={setPassword}
+                value={password}
+              ></TextInput>
+              <Text style={styles.showPass}>Показати</Text>
+            </View>
+            <Button
+              title="Зареєстуватися"
+              buttonStyle={styles.mainButton}
+              titleStyle={styles.mainButtonText}
+              containerStyle={styles.mainButtonContainer}
+            ></Button>
+            <Text>
+              Вже є акаунт? <Text>Увійти</Text>
+            </Text>
+          </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    // height: 40,
-    // margin: 12,
-    // padding: 10,
-    borderWidth: 1,
-    borderColor: "black",
-  },
-  photo: {
-    width: 132,
-    height: 120,
-  },
-});
 
 export default RegistrationScreen;
