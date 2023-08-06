@@ -80,6 +80,9 @@ const styles = StyleSheet.create({
     marginTop: 92,
     marginBottom: 33,
   },
+  loginHeader: {
+    marginTop: 32,
+  },
   mainButton: {
     backgroundColor: "#FF6C00",
     borderRadius: 30,

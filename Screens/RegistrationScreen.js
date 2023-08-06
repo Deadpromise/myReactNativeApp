@@ -1,20 +1,10 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  // Button,
-  Image,
-  ImageBackground,
-  WebView,
-} from "react-native";
+import { View, Text, TextInput, Image, ImageBackground } from "react-native";
 import { Button } from "@rneui/themed";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 import AddPhoto from "../images/white-bg.jpg";
 import UserPhoto from "../images/photo-example.jpg";
-import PlusIcon from "../images/add.svg";
 
 const bgImage = require("../images/Phot-BG.png");
 
