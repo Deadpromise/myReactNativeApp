@@ -52,12 +52,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "relative",
   },
-  showPass: {
+  showPassContainer: {
+    position: "absolute",
+    right: 32,
+  },
+  showPassText: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     color: "rgba(27, 67, 113, 1)",
-    position: "absolute",
-    right: 32,
   },
   photoContainer: { position: "absolute", top: -60, zIndex: 1 },
   photo: {
