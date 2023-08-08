@@ -18,7 +18,7 @@ import UserPhoto from "../images/photo-example.jpg";
 
 const bgImage = require("../images/Phot-BG.png");
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,6 +54,7 @@ const RegistrationScreen = () => {
     console.log("Login:", login);
     console.log("Email:", email);
     console.log("Password:", password);
+    navigation.navigate("Home");
   };
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
@@ -147,7 +148,13 @@ const RegistrationScreen = () => {
                 containerStyle={styles.mainButtonContainer}
                 onPress={onRegister}
               ></Button>
-              <Text style={styles.redirectText}>Вже є акаунт? Увійти</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Login");
+                }}
+              >
+                <Text style={styles.redirectText}>Вже є акаунт? Увійти</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>

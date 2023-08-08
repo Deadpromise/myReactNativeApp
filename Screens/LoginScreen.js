@@ -15,7 +15,7 @@ import styles from "./styles";
 
 const bgImage = require("../images/Phot-BG.png");
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -39,6 +39,7 @@ const LoginScreen = () => {
   const onLogin = () => {
     console.log("Email:", email);
     console.log("Password:", password);
+    navigation.navigate("Home");
   };
 
   return (
@@ -54,13 +55,13 @@ const LoginScreen = () => {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
               >
                 <TextInput
-                  style={[styles.input, isFocused2 && styles.inputFocused]}
+                  style={[styles.input, isFocused1 && styles.inputFocused]}
                   placeholder="Адреса електронної пошти"
                   placeholderTextColor="rgba(189, 189, 189, 1)"
                   onChangeText={setEmail}
                   value={email}
-                  onFocus={handleFocus2}
-                  onBlur={() => setIsFocused2(false)}
+                  onFocus={handleFocus1}
+                  onBlur={() => setIsFocused1(false)}
                 ></TextInput>
               </KeyboardAvoidingView>
               <View style={styles.passContainer}>
@@ -99,9 +100,15 @@ const LoginScreen = () => {
                 containerStyle={styles.mainButtonContainer}
                 onPress={onLogin}
               ></Button>
-              <Text style={styles.redirectText}>
-                Немає акаунту? Зареєструватися
-              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Registration");
+                }}
+              >
+                <Text style={styles.redirectText}>
+                  Немає акаунту? Зареєструватися
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
