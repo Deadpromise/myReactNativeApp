@@ -1,18 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign, Octicons, MaterialIcons } from "@expo/vector-icons";
-
+import { useState, useEffect } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import styles from "./styles";
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
-
-{
-  /* <AntDesign name="plus" size={24} color="black" />;
-
-<AntDesign name="user" size={24} color="black" />;
-
-<Octicons name="apps" size={24} color="black" />; */
-}
 
 const Tabs = createBottomTabNavigator();
 
@@ -35,6 +29,7 @@ const Home = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           display: "flex",
+          height: 83,
         },
         headerTitleAlign: "center",
       })}
@@ -57,10 +52,43 @@ const Home = () => {
               />
             </TouchableOpacity>
           ),
+          title: "Публікації",
+          headerTitleStyle: styles.screenHeader,
+          headerStyle: styles.headerContainer,
         }}
       />
-      <Tabs.Screen name="CreatePosts" component={CreatePostsScreen} />
-      <Tabs.Screen name="Profile" component={ProfileScreen} />
+      <Tabs.Screen
+        name="CreatePosts"
+        component={CreatePostsScreen}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                console.log("pressed back");
+              }}
+              style={{ marginLeft: 10 }}
+            >
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="rgba(33, 33, 33, 0.8)"
+              />
+            </TouchableOpacity>
+          ),
+          title: "Створити публікацію",
+          headerTitleStyle: styles.screenHeader,
+          headerStyle: styles.headerContainer,
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Публікації",
+          headerTitleStyle: styles.screenHeader,
+          headerStyle: styles.headerContainer,
+        }}
+      />
     </Tabs.Navigator>
   );
 };

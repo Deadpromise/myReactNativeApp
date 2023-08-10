@@ -107,6 +107,86 @@ const styles = StyleSheet.create({
     color: "rgba(27, 67, 113, 1)",
     textAlign: "center",
   },
+  headerContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0, 0, 0, 0.30)",
+    height: 88,
+  },
+  screenHeader: {
+    fontSize: 17,
+    fontFamily: "Roboto-Medium",
+    letterSpacing: -0.408,
+  },
+  postsScreenContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingTop: 32,
+    paddingBottom: 32,
+    width: 343,
+  },
+  userPostsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+    // marginBottom: 32,
+    // marginTop: 32,
+  },
+  postsUserPhoto: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    marginRight: 8,
+  },
+  userPostsName: {
+    color: "#212121",
+    fontFamily: "Roboto-Bold",
+    fontSize: 13,
+  },
+  userPostsEmail: {
+    color: "rgba(33, 33, 33, 0.8)",
+    fontFamily: "Roboto-Regular",
+    fontSize: 11,
+  },
+  postsCard: { marginTop: 32 },
+  postsPhoto: {
+    width: 343,
+    height: 240,
+    borderRadius: 8,
+  },
+  cardHead: {
+    fontFamily: "Roboto-Medium",
+    color: "rgba(33, 33, 33, 1)",
+    fontSize: 16,
+    marginTop: 8,
+  },
+  cardBottomBlock: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
+  cardCommentsBlock: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  cardCommentsQty: {
+    color: "rgba(189, 189, 189, 1)",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    marginLeft: 6,
+  },
+  cardGeoText: {
+    color: "rgba(33, 33, 33, 1)",
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    marginLeft: 6,
+    textDecorationLine: "underline",
+  },
 });
 
 export default styles;

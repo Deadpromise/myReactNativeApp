@@ -10,8 +10,11 @@ import Home from "./Screens/Home";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
+    // 400
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    // 500
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+    // 700
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
   });
   if (!fontsLoaded) {
