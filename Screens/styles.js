@@ -3,18 +3,19 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: "space-between",
   },
   bgContainer: {
+    width: "100%",
     height: "100%",
-    flex: 1,
     resizeMode: "cover",
+    position: "absolute",
+    top: 0,
   },
   secondaryContainer: {
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 263,
+    // marginTop: 263,
   },
   formContainer: {
     width: "100%",
@@ -132,8 +133,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-start",
-    // marginBottom: 32,
-    // marginTop: 32,
   },
   postsUserPhoto: {
     width: 60,
@@ -169,6 +168,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 8,
   },
+  cardBottomAddBlock: {
+    display: "flex",
+    flexDirection: "row",
+  },
   cardCommentsBlock: {
     display: "flex",
     flexDirection: "row",
@@ -180,12 +183,108 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 6,
   },
+  cardCommentsQtyActive: { color: "rgba(33, 33, 33, 1)" },
   cardGeoText: {
     color: "rgba(33, 33, 33, 1)",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     marginLeft: 6,
     textDecorationLine: "underline",
+  },
+  emptyPhotoBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 343,
+    height: 240,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    position: "relative",
+  },
+  photoCameraIcon: {
+    position: "absolute",
+    zIndex: 2,
+  },
+  photoCircle: {
+    position: "absolute",
+    zIndex: 1,
+  },
+  addPhotoText: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    color: "#BDBDBD",
+    marginTop: 8,
+    alignSelf: "flex-start",
+  },
+  photoNameInput: {
+    fontFamily: "Roboto-Medium",
+    fontSize: 16,
+    color: "#212121",
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+  },
+  geoInputContainer: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  geoInputIcon: {
+    position: "absolute",
+  },
+  photoGeoInput: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
+    color: "#212121",
+    paddingVertical: 16,
+    paddingLeft: 28,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+  },
+  publishButton: {
+    width: 343,
+  },
+  publishButtonContainer: {
+    marginTop: 32,
+  },
+  pushBottomWrapper: {
+    flex: 1,
+    // paddingBottom: 42,
+  },
+  pushBottomElement: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  pushTopElement: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  profileContainer: {
+    marginTop: 147,
+    width: "100%",
+    // display: "flex",
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  profilePostsContainer: {
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "#FFF",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  profileNameText: {
+    marginTop: 92,
+    fontFamily: "Roboto-Medium",
+    fontSize: 30,
   },
 });
 

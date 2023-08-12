@@ -1,8 +1,7 @@
 import { View, Image, Text, ScrollView } from "react-native";
 import styles from "./styles";
 
-import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
+import { FontAwesome, Feather } from "@expo/vector-icons";
 import UserPhoto from "../images/photo-example.jpg";
 import Forest from "../images/forest.jpg";
 
