@@ -16,7 +16,9 @@ import {
   Feather,
 } from "@expo/vector-icons";
 import { Button } from "@rneui/themed";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
 import Forest from "../images/forest.jpg";
@@ -40,6 +42,43 @@ const CreatePostsScreen = ({ navigation }) => {
   const [photoName, setPhotoName] = useState("");
   const [photoGeo, setPhotoGeo] = useState("");
   const [isPhotoLoaded, setIsPhotoLoaded] = useState(false);
+  const [capturedPhotoUri, setCapturedPhotoUri] = useState("");
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+  const takePhoto = async () => {
+    if (cameraRef) {
+      const { uri } = await cameraRef.takePictureAsync();
+      await MediaLibrary.createAssetAsync(uri);
+      setCapturedPhotoUri(uri);
+      setIsPhotoLoaded(true);
+    }
+  };
+
+  const onDelete = () => {
+    console.log("pressed delete");
+    setIsPhotoLoaded(false);
+    setCapturedPhotoUri("");
+    setPhotoName("");
+    setPhotoGeo("");
+  };
 
   const photoCameraColor = isPhotoLoaded ? "#FFF" : "rgba(189, 189, 189, 1)";
   const circleColor = isPhotoLoaded
@@ -53,29 +92,42 @@ const CreatePostsScreen = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.pushBottomWrapper}>
         <View style={styles.postsScreenContainer}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               setIsPhotoLoaded(true);
             }}
-          >
-            <View style={styles.emptyPhotoBox}>
-              <MaterialIcons
-                style={styles.photoCameraIcon}
-                name="photo-camera"
-                size={24}
-                color={photoCameraColor}
-              />
-              <FontAwesome
-                style={styles.photoCircle}
-                name="circle"
-                size={60}
-                color={circleColor}
-              />
-              {isPhotoLoaded && (
-                <Image source={Forest} style={styles.postsPhoto}></Image>
-              )}
-            </View>
-          </TouchableOpacity>
+          > */}
+          <View style={styles.cameraContainer}>
+            <Camera style={{}} type={type} ref={setCameraRef}>
+              <View style={styles.emptyPhotoBox}>
+                <TouchableOpacity
+                  style={styles.cameraButton}
+                  onPress={takePhoto}
+                >
+                  <MaterialIcons
+                    style={styles.photoCameraIcon}
+                    name="photo-camera"
+                    size={24}
+                    color={photoCameraColor}
+                  />
+                  <FontAwesome
+                    style={styles.photoCircle}
+                    name="circle"
+                    size={60}
+                    color={circleColor}
+                  />
+                </TouchableOpacity>
+                {isPhotoLoaded && (
+                  <Image
+                    source={{ uri: capturedPhotoUri }}
+                    style={styles.postsPhoto}
+                  ></Image>
+                )}
+              </View>
+            </Camera>
+          </View>
+
+          {/* </TouchableOpacity> */}
 
           <Text style={styles.addPhotoText}>{addPhotoTextValue}</Text>
           <KeyboardAvoidingView
@@ -124,13 +176,7 @@ const CreatePostsScreen = ({ navigation }) => {
             }}
           ></Button>
         </View>
-        <TouchableOpacity
-          style={styles.pushBottomElement}
-          onPress={() => {
-            console.log("pressed delete");
-            setIsPhotoLoaded(false);
-          }}
-        >
+        <TouchableOpacity style={styles.pushBottomElement} onPress={onDelete}>
           <Feather
             style={{ marginBottom: 42 }}
             name="trash-2"

@@ -286,6 +286,15 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Medium",
     fontSize: 30,
   },
+  cameraContainer: {
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  cameraButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default styles;
