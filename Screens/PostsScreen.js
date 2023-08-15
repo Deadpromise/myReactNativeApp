@@ -4,6 +4,7 @@ import styles from "./styles";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import UserPhoto from "../images/photo-example.jpg";
 import Forest from "../images/forest.jpg";
+import MapScreen from "./MapScreen";
 
 const PostsScreen = () => {
   return (
@@ -65,6 +66,7 @@ const PostsScreen = () => {
           </View>
         </View>
       </ScrollView>
+      {/* <MapScreen></MapScreen> */}
     </View>
   );
 };

@@ -19,11 +19,12 @@ import { Button } from "@rneui/themed";
 import { useState, useEffect, useRef } from "react";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 import styles from "./styles";
 import { TextInput } from "react-native-gesture-handler";
 import Forest from "../images/forest.jpg";
 
-const CreatePostsScreen = ({ navigation }) => {
+const CreatePostsScreen = ({ navigation, route }) => {
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -46,6 +47,22 @@ const CreatePostsScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const [location, setLocation] = useState(null);
+
+  const getCurrentLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    setLocation(coords);
+  };
 
   useEffect(() => {
     (async () => {
@@ -78,6 +95,13 @@ const CreatePostsScreen = ({ navigation }) => {
     setCapturedPhotoUri("");
     setPhotoName("");
     setPhotoGeo("");
+  };
+  const onPublish = () => {
+    getCurrentLocation();
+    console.log(location);
+    console.log("publish");
+    onDelete();
+    navigation.navigate("Posts");
   };
 
   const photoCameraColor = isPhotoLoaded ? "#FFF" : "rgba(189, 189, 189, 1)";
@@ -171,9 +195,7 @@ const CreatePostsScreen = ({ navigation }) => {
               styles.publishButtonContainer,
             ]}
             disabled={!isPhotoLoaded}
-            onPress={() => {
-              console.log("publish");
-            }}
+            onPress={onPublish}
           ></Button>
         </View>
         <TouchableOpacity style={styles.pushBottomElement} onPress={onDelete}>
