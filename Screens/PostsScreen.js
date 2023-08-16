@@ -1,15 +1,16 @@
-import { View, Image, Text, ScrollView } from "react-native";
+import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import styles from "./styles";
 
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import UserPhoto from "../images/photo-example.jpg";
 import Forest from "../images/forest.jpg";
-import MapScreen from "./MapScreen";
 
-const PostsScreen = () => {
+const PostsScreen = ({ navigation }) => {
+  const testLocation = { latitude: 37.4219983, longitude: -122.084 };
+
   return (
     <View style={styles.postsScreenContainer}>
-      <ScrollView>
+      <ScrollView style={{ width: 343 }}>
         <View style={styles.userPostsContainer}>
           <Image source={UserPhoto} style={styles.postsUserPhoto}></Image>
           <View>
@@ -22,19 +23,32 @@ const PostsScreen = () => {
           <Text style={styles.cardHead}>Ліс</Text>
           <View style={styles.cardBottomBlock}>
             <View style={styles.cardCommentsBlock}>
-              <FontAwesome
-                name="comment-o"
-                size={24}
-                color="rgba(189, 189, 189, 1)"
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("press comm");
+                  navigation.navigate("Comments");
+                }}
+              >
+                <FontAwesome
+                  name="comment-o"
+                  size={24}
+                  color="rgba(189, 189, 189, 1)"
+                />
+              </TouchableOpacity>
               <Text style={styles.cardCommentsQty}>0</Text>
             </View>
             <View style={styles.cardCommentsBlock}>
-              <Feather
-                name="map-pin"
-                size={24}
-                color="rgba(189, 189, 189, 1)"
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Map", { testLocation });
+                }}
+              >
+                <Feather
+                  name="map-pin"
+                  size={24}
+                  color="rgba(189, 189, 189, 1)"
+                />
+              </TouchableOpacity>
               <Text style={styles.cardGeoText}>
                 Ivano-Frankivs'k Region, Ukraine
               </Text>
@@ -54,11 +68,18 @@ const PostsScreen = () => {
               <Text style={styles.cardCommentsQty}>0</Text>
             </View>
             <View style={styles.cardCommentsBlock}>
-              <Feather
-                name="map-pin"
-                size={24}
-                color="rgba(189, 189, 189, 1)"
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("press map");
+                  navigation.navigate("Map", { testLocation });
+                }}
+              >
+                <Feather
+                  name="map-pin"
+                  size={24}
+                  color="rgba(189, 189, 189, 1)"
+                />
+              </TouchableOpacity>
               <Text style={styles.cardGeoText}>
                 Ivano-Frankivs'k Region, Ukraine
               </Text>

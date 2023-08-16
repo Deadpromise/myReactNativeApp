@@ -7,6 +7,11 @@ import "react-native-gesture-handler";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import Home from "./Screens/Home";
+import MapScreen from "./Screens/MapScreen";
+import CommentsScreen from "./Screens/CommentsScreen";
+import styles from "./Screens/styles";
+
+import testscreen from "./Screens/testscreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -40,6 +45,26 @@ export default function App() {
           name="Home"
           component={Home}
           options={{ headerShown: false }}
+        ></MainStack.Screen>
+        <MainStack.Screen
+          name="Map"
+          component={MapScreen}
+          options={{
+            title: "Мапа",
+            headerTitleStyle: styles.screenHeader,
+            headerStyle: styles.headerContainer,
+          }}
+        ></MainStack.Screen>
+        <MainStack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          // component={testscreen}
+          options={{
+            title: "Коментарі",
+            headerTitleStyle: styles.screenHeader,
+            headerStyle: styles.headerContainer,
+            headerTitleAlign: "center",
+          }}
         ></MainStack.Screen>
       </MainStack.Navigator>
     </NavigationContainer>

@@ -61,7 +61,9 @@ const CreatePostsScreen = ({ navigation, route }) => {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
+
     setLocation(coords);
+    console.log("Location set:", coords);
   };
 
   useEffect(() => {
@@ -96,9 +98,8 @@ const CreatePostsScreen = ({ navigation, route }) => {
     setPhotoName("");
     setPhotoGeo("");
   };
-  const onPublish = () => {
-    getCurrentLocation();
-    console.log(location);
+  const onPublish = async () => {
+    await getCurrentLocation();
     console.log("publish");
     onDelete();
     navigation.navigate("Posts");
