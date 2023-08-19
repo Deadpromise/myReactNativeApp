@@ -60,9 +60,9 @@ const RegistrationScreen = ({ navigation }) => {
     console.log("Email:", email);
     console.log("Password:", password);
 
-    dispatch(registerDB(email, password));
+    dispatch(registerDB({ email, password, login }));
 
-    // navigation.navigate("Home");
+    navigation.navigate("Home");
   };
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;

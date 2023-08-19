@@ -1,4 +1,6 @@
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { getUser } from "../redux/auth/selectors";
 import styles from "./styles";
 
 import { FontAwesome, Feather } from "@expo/vector-icons";
@@ -7,6 +9,7 @@ import Forest from "../images/forest.jpg";
 
 const PostsScreen = ({ navigation }) => {
   const testLocation = { latitude: 37.4219983, longitude: -122.084 };
+  const user = useSelector(getUser);
 
   return (
     <View style={styles.postsScreenContainer}>
@@ -14,8 +17,8 @@ const PostsScreen = ({ navigation }) => {
         <View style={styles.userPostsContainer}>
           <Image source={UserPhoto} style={styles.postsUserPhoto}></Image>
           <View>
-            <Text style={styles.userPostsName}>Natali Romanova</Text>
-            <Text style={styles.userPostsEmail}>email@example.com</Text>
+            <Text style={styles.userPostsName}>{user.name}</Text>
+            <Text style={styles.userPostsEmail}>{user.email}</Text>
           </View>
         </View>
         <View style={styles.postsCard}>
@@ -87,7 +90,6 @@ const PostsScreen = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      {/* <MapScreen></MapScreen> */}
     </View>
   );
 };

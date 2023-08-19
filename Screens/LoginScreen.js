@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Button } from "@rneui/themed";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginDB } from "../redux/auth/operations";
 import styles from "./styles";
 
 const bgImage = require("../images/Phot-BG.png");
@@ -36,10 +38,12 @@ const LoginScreen = ({ navigation }) => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const dispatch = useDispatch();
+
   const onLogin = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-    loginDB(email, password);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    dispatch(loginDB({ email, password }));
     navigation.navigate("Home");
   };
 

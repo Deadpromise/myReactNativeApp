@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign, Octicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { logoutDB } from "../redux/auth/operations";
 import styles from "./styles";
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
@@ -11,6 +13,8 @@ import ProfileScreen from "./ProfileScreen";
 const Tabs = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   return (
     <Tabs.Navigator
       initialRouteName="Posts"
@@ -42,6 +46,7 @@ const Home = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 console.log("pressed logout");
+                dispatch(logoutDB);
                 navigation.navigate("Login");
               }}
               style={{ marginRight: 10 }}
