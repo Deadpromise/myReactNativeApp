@@ -39,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
   const onLogin = () => {
     console.log("Email:", email);
     console.log("Password:", password);
+    loginDB(email, password);
     navigation.navigate("Home");
   };
 

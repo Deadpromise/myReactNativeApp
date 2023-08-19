@@ -4,6 +4,9 @@ import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import Home from "./Screens/Home";
@@ -29,45 +32,52 @@ export default function App() {
   const MainStack = createStackNavigator();
 
   return (
-    <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Login">
-        <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{ headerShown: false }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="Map"
-          component={MapScreen}
-          options={{
-            title: "Мапа",
-            headerTitleStyle: styles.screenHeader,
-            headerStyle: styles.headerContainer,
-          }}
-        ></MainStack.Screen>
-        <MainStack.Screen
-          name="Comments"
-          component={CommentsScreen}
-          // component={testscreen}
-          options={{
-            title: "Коментарі",
-            headerTitleStyle: styles.screenHeader,
-            headerStyle: styles.headerContainer,
-            headerTitleAlign: "center",
-          }}
-        ></MainStack.Screen>
-      </MainStack.Navigator>
-    </NavigationContainer>
+    <Provider store={store.store}>
+      <PersistGate
+        loading={<Text>Loading...</Text>}
+        persistor={store.persistor}
+      >
+        <NavigationContainer>
+          <MainStack.Navigator initialRouteName="Login">
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{ headerShown: false }}
+            ></MainStack.Screen>
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            ></MainStack.Screen>
+            <MainStack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            ></MainStack.Screen>
+            <MainStack.Screen
+              name="Map"
+              component={MapScreen}
+              options={{
+                title: "Мапа",
+                headerTitleStyle: styles.screenHeader,
+                headerStyle: styles.headerContainer,
+              }}
+            ></MainStack.Screen>
+            <MainStack.Screen
+              name="Comments"
+              component={CommentsScreen}
+              // component={testscreen}
+              options={{
+                title: "Коментарі",
+                headerTitleStyle: styles.screenHeader,
+                headerStyle: styles.headerContainer,
+                headerTitleAlign: "center",
+              }}
+            ></MainStack.Screen>
+          </MainStack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 //  <View style={styles.container}>

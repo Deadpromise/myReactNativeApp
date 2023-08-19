@@ -11,10 +11,13 @@ import {
 } from "react-native";
 import { Button } from "@rneui/themed";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 import AddPhoto from "../images/white-bg.jpg";
 import UserPhoto from "../images/photo-example.jpg";
+
+import { registerDB } from "../redux/auth/operations";
 
 const bgImage = require("../images/Phot-BG.png");
 
@@ -50,11 +53,16 @@ const RegistrationScreen = ({ navigation }) => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const dispatch = useDispatch();
+
   const onRegister = () => {
     console.log("Login:", login);
     console.log("Email:", email);
     console.log("Password:", password);
-    navigation.navigate("Home");
+
+    dispatch(registerDB(email, password));
+
+    // navigation.navigate("Home");
   };
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
