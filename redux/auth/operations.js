@@ -23,9 +23,10 @@ export const registerDB = createAsyncThunk(
         name: response.user.displayName,
         token: response._tokenResponse.idToken,
       };
+      console.log("reg done");
       return data;
     } catch (error) {
-      console.log("thunkeErr", error);
+      console.log(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -36,9 +37,14 @@ export const loginDB = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log("login", response);
-      //   return response.user;
+      const data = {
+        email: response._tokenResponse.email,
+        name: response.user.displayName,
+        token: response._tokenResponse.idToken,
+      };
+      return data;
     } catch (error) {
+      console.log(error.message);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

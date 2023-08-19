@@ -10,8 +10,9 @@ import {
   Keyboard,
 } from "react-native";
 import { Button } from "@rneui/themed";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getIsLoggedIn } from "../redux/auth/selectors";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 import AddPhoto from "../images/white-bg.jpg";
@@ -54,16 +55,20 @@ const RegistrationScreen = ({ navigation }) => {
   };
 
   const dispatch = useDispatch();
-
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const onRegister = () => {
     console.log("Login:", login);
     console.log("Email:", email);
     console.log("Password:", password);
 
     dispatch(registerDB({ email, password, login }));
-
-    navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
 

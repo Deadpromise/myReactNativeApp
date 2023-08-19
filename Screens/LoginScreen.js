@@ -10,9 +10,10 @@ import {
   Keyboard,
 } from "react-native";
 import { Button } from "@rneui/themed";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { loginDB } from "../redux/auth/operations";
+import { getIsLoggedIn } from "../redux/auth/selectors";
 import styles from "./styles";
 
 const bgImage = require("../images/Phot-BG.png");
@@ -39,13 +40,17 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(getIsLoggedIn);
 
   const onLogin = () => {
-    // console.log("Email:", email);
-    // console.log("Password:", password);
     dispatch(loginDB({ email, password }));
-    navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

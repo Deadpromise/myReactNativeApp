@@ -22,13 +22,24 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
       })
       .addCase(registerDB.rejected, (state, action) => {
+        state.isLoggedIn = false;
         console.log("reg error");
       })
       .addCase(loginDB.fulfilled, (state, action) => {
-        console.log(action);
+        state.user.email = action.payload.email;
+        state.user.name = action.payload.name;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+      })
+      .addCase(loginDB.rejected, (state, action) => {
+        state.isLoggedIn = false;
+        console.log("login error");
       })
       .addCase(logoutDB.fulfilled, (state) => {
-        state = initialState;
+        state.user.email = null;
+        state.user.name = null;
+        state.token = null;
+        state.isLoggedIn = false;
       });
   },
 });

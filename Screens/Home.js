@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 console.log("pressed logout");
-                dispatch(logoutDB);
+                dispatch(logoutDB());
                 navigation.navigate("Login");
               }}
               style={{ marginRight: 10 }}
