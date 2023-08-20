@@ -18,6 +18,7 @@ import {
 } from "@expo/vector-icons";
 import { Button } from "@rneui/themed";
 import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
@@ -28,7 +29,11 @@ import { auth } from "../config";
 import { onAuthStateChanged } from "firebase/auth";
 import Forest from "../images/forest.jpg";
 
-import { writeDataToFirestore, uploadImage } from "../redux/posts/operations";
+import {
+  writeDataToFirestore,
+  uploadImage,
+  getAllPosts,
+} from "../redux/posts/operations";
 
 const CreatePostsScreen = ({ navigation, route }) => {
   useEffect(() => {
@@ -46,16 +51,19 @@ const CreatePostsScreen = ({ navigation, route }) => {
     });
   }, [navigation]);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in
-      // console.log("User is signed in:", user.uid);
-      setCurrentUserId(user.uid);
-    } else {
-      // console.log("User is signed out");
-      navigation.navigate("Login");
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserId(user.uid); // Set currentUserId here
+      } else {
+        navigation.navigate("Login");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
 
   const [photoName, setPhotoName] = useState("");
   const [photoGeo, setPhotoGeo] = useState("");
@@ -122,6 +130,9 @@ const CreatePostsScreen = ({ navigation, route }) => {
     setPhotoGeo("");
     setPhotoFileName("");
   };
+
+  const dispatch = useDispatch();
+
   const onPublish = async () => {
     const currentLocation = await getCurrentLocation();
     console.log(currentLocation);
@@ -133,6 +144,11 @@ const CreatePostsScreen = ({ navigation, route }) => {
       currentLocation,
       currentUserId
     );
+    try {
+      dispatch(getAllPosts());
+    } catch (error) {
+      console.error("Error fetching posts data:", error);
+    }
     onDelete();
     navigation.navigate("Posts");
   };

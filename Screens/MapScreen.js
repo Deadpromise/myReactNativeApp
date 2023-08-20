@@ -8,11 +8,11 @@ import styles from "./styles";
 const MapScreen = ({ route }) => {
   const [location, setLocation] = useState(null);
   const {
-    params: { testLocation },
+    params: { locationCoords },
   } = useRoute();
 
   useEffect(() => {
-    setLocation(testLocation);
+    setLocation(locationCoords);
   }, []);
 
   // useEffect(() => {

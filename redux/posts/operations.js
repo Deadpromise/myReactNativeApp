@@ -1,14 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db, storage } from "../../config";
 
 export const uriToBlob = (uri) => {
@@ -84,21 +77,10 @@ export const writeDataToFirestore = async (
     throw e;
   }
 };
-
-// export const getAllPosts = async () => {
-//   try {
-//     const snapshot = await getDocs(collection(db, "posts"));
-//     snapshot.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
-//     // Повертаємо масив обʼєктів у довільній формі
-//     return snapshot.map((doc) => ({ id: doc.id, data: doc.data() }));
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-// };
-export const getAllPosts = async () => {
+export const getAllPosts = createAsyncThunk("posts/getAllPosts", async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "posts"));
+    // querySnapshot.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
     const postsData = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       data: doc.data(),
@@ -108,17 +90,4 @@ export const getAllPosts = async () => {
     console.log(error);
     throw error;
   }
-};
-
-export const getDataFromFirestore = async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "posts"));
-    // Перевіряємо у консолі отримані дані
-    snapshot.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
-    // Повертаємо масив обʼєктів у довільній формі
-    return snapshot.map((doc) => ({ id: doc.id, data: doc.data() }));
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+});
