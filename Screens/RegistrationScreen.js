@@ -12,7 +12,9 @@ import {
 import { Button } from "@rneui/themed";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIsLoggedIn } from "../redux/auth/selectors";
+import { auth } from "../config";
+import { onAuthStateChanged } from "firebase/auth";
+import { getIsLoggedIn, getAuthError } from "../redux/auth/selectors";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 import AddPhoto from "../images/white-bg.jpg";
@@ -56,6 +58,8 @@ const RegistrationScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(getIsLoggedIn);
+  const authError = useSelector(getAuthError);
+
   const onRegister = () => {
     console.log("Login:", login);
     console.log("Email:", email);
@@ -63,12 +67,21 @@ const RegistrationScreen = ({ navigation }) => {
 
     dispatch(registerDB({ email, password, login }));
   };
-
-  useEffect(() => {
-    if (isLoggedIn) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      console.log("User is signed in:");
       navigation.navigate("Home");
+    } else {
+      console.log("User is signed out");
     }
-  }, [isLoggedIn]);
+  });
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigation.navigate("Home");
+  //   }
+  // }, [isLoggedIn]);
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
 
@@ -168,6 +181,17 @@ const RegistrationScreen = ({ navigation }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
+                  {authError && (
+                    <Text
+                      style={{
+                        color: "red",
+                        textAlign: "center",
+                        marginTop: 10,
+                      }}
+                    >
+                      Помилка реєстрації.
+                    </Text>
+                  )}
                   <Button
                     title="Зареєстуватися"
                     buttonStyle={styles.mainButton}

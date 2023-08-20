@@ -7,6 +7,7 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
+  authError: false,
 };
 
 const authSlice = createSlice({
@@ -20,9 +21,11 @@ const authSlice = createSlice({
         state.user.name = action.payload.name;
         state.token = action.payload.token;
         state.isLoggedIn = true;
+        state.authError = false;
       })
       .addCase(registerDB.rejected, (state, action) => {
         state.isLoggedIn = false;
+        state.authError = true;
         console.log("reg error");
       })
       .addCase(loginDB.fulfilled, (state, action) => {
@@ -30,9 +33,11 @@ const authSlice = createSlice({
         state.user.name = action.payload.name;
         state.token = action.payload.token;
         state.isLoggedIn = true;
+        state.authError = false;
       })
       .addCase(loginDB.rejected, (state, action) => {
         state.isLoggedIn = false;
+        state.authError = true;
         console.log("login error");
       })
       .addCase(logoutDB.fulfilled, (state) => {

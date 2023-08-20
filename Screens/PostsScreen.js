@@ -1,6 +1,9 @@
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../redux/auth/selectors";
+import { auth } from "../config";
+import { onAuthStateChanged } from "firebase/auth";
+import { getAllPosts, getDataFromFirestore } from "../redux/posts/operations";
 import styles from "./styles";
 
 import { FontAwesome, Feather } from "@expo/vector-icons";
@@ -10,6 +13,22 @@ import Forest from "../images/forest.jpg";
 const PostsScreen = ({ navigation }) => {
   const testLocation = { latitude: 37.4219983, longitude: -122.084 };
   const user = useSelector(getUser);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // User is signed in
+      try {
+        const postsData = await getAllPosts();
+        console.log("Posts data:", postsData);
+      } catch (error) {
+        console.error("Error fetching posts data:", error);
+      }
+      console.log("User is signed in:");
+    } else {
+      console.log("User is signed out");
+      navigation.navigate("Login");
+    }
+  });
 
   return (
     <View style={styles.postsScreenContainer}>

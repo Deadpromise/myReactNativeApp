@@ -14,6 +14,10 @@ import {
   FontAwesome,
   Feather,
 } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logoutDB } from "../redux/auth/operations";
+import { auth } from "../config";
+import { onAuthStateChanged } from "firebase/auth";
 import styles from "./styles";
 import AddPhoto from "../images/white-bg.jpg";
 import UserPhoto from "../images/photo-example.jpg";
@@ -23,6 +27,17 @@ const bgImage = require("../images/Phot-BG.png");
 
 const ProfileScreen = ({ navigation }) => {
   const testLocation = { latitude: 37.4219983, longitude: -122.084 };
+  const dispatch = useDispatch();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      console.log("User is signed in:");
+    } else {
+      console.log("User is signed out");
+      navigation.navigate("Login");
+    }
+  });
 
   const [isPhotoLoaded, setIsPhotoLoaded] = useState(true);
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
@@ -66,8 +81,8 @@ const ProfileScreen = ({ navigation }) => {
               <View style={styles.profilePostsContainer}>
                 <TouchableOpacity
                   onPress={() => {
+                    dispatch(logoutDB());
                     console.log("pressed logout");
-                    navigation.navigate("Login");
                   }}
                   style={{ position: "absolute", top: 22, right: 16 }}
                 >

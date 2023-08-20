@@ -47,7 +47,7 @@ const Home = ({ navigation }) => {
               onPress={() => {
                 console.log("pressed logout");
                 dispatch(logoutDB());
-                navigation.navigate("Login");
+                // navigation.navigate("Login");
               }}
               style={{ marginRight: 10 }}
             >

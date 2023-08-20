@@ -1,6 +1,7 @@
 import {
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -21,8 +22,13 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import styles from "./styles";
-import { TextInput } from "react-native-gesture-handler";
+// import { TextInput } from "react-native-gesture-handler";
+import { getUser } from "../redux/auth/selectors";
+import { auth } from "../config";
+import { onAuthStateChanged } from "firebase/auth";
 import Forest from "../images/forest.jpg";
+
+import { writeDataToFirestore, uploadImage } from "../redux/posts/operations";
 
 const CreatePostsScreen = ({ navigation, route }) => {
   useEffect(() => {
@@ -40,6 +46,17 @@ const CreatePostsScreen = ({ navigation, route }) => {
     });
   }, [navigation]);
 
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      // console.log("User is signed in:", user.uid);
+      setCurrentUserId(user.uid);
+    } else {
+      // console.log("User is signed out");
+      navigation.navigate("Login");
+    }
+  });
+
   const [photoName, setPhotoName] = useState("");
   const [photoGeo, setPhotoGeo] = useState("");
   const [isPhotoLoaded, setIsPhotoLoaded] = useState(false);
@@ -47,8 +64,9 @@ const CreatePostsScreen = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-
+  const [photoFileName, setPhotoFileName] = useState("");
   const [location, setLocation] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   const getCurrentLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -64,6 +82,7 @@ const CreatePostsScreen = ({ navigation, route }) => {
 
     setLocation(coords);
     console.log("Location set:", coords);
+    return coords;
   };
 
   useEffect(() => {
@@ -85,8 +104,12 @@ const CreatePostsScreen = ({ navigation, route }) => {
   const takePhoto = async () => {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync();
-      await MediaLibrary.createAssetAsync(uri);
-      setCapturedPhotoUri(uri);
+      const savedPhoto = await MediaLibrary.createAssetAsync(uri);
+      // console.log("savedphoto", savedPhoto.uri);
+      setCapturedPhotoUri(savedPhoto.uri);
+      const parts = savedPhoto.uri.split("/");
+      const filename = parts[parts.length - 1];
+      setPhotoFileName(filename);
       setIsPhotoLoaded(true);
     }
   };
@@ -97,10 +120,19 @@ const CreatePostsScreen = ({ navigation, route }) => {
     setCapturedPhotoUri("");
     setPhotoName("");
     setPhotoGeo("");
+    setPhotoFileName("");
   };
   const onPublish = async () => {
-    await getCurrentLocation();
-    console.log("publish");
+    const currentLocation = await getCurrentLocation();
+    console.log(currentLocation);
+    await writeDataToFirestore(
+      capturedPhotoUri,
+      photoFileName,
+      photoName,
+      photoGeo,
+      currentLocation,
+      currentUserId
+    );
     onDelete();
     navigation.navigate("Posts");
   };
@@ -199,6 +231,33 @@ const CreatePostsScreen = ({ navigation, route }) => {
             onPress={onPublish}
           ></Button>
         </View>
+        {/* Test buttons */}
+        {/* <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => {
+            uploadImage(capturedPhotoUri, photoFileName);
+          }}
+        >
+          <Feather
+            style={{ marginBottom: 42 }}
+            name="trash-2"
+            size={24}
+            color="red"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => {
+            uploadImage(capturedPhotoUri, photoFileName);
+          }}
+        >
+          <Feather
+            style={{ marginBottom: 42 }}
+            name="trash-2"
+            size={24}
+            color="green"
+          />
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.pushBottomElement} onPress={onDelete}>
           <Feather
             style={{ marginBottom: 42 }}
