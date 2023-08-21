@@ -67,21 +67,16 @@ const RegistrationScreen = ({ navigation }) => {
 
     dispatch(registerDB({ email, password, login }));
   };
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in
-      console.log("User is signed in:");
+      // console.log("User is signed in:");
       navigation.navigate("Home");
     } else {
-      console.log("User is signed out");
+      // console.log("User is signed out");
     }
   });
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigation.navigate("Home");
-  //   }
-  // }, [isLoggedIn]);
 
   const photoSrc = isPhotoLoaded ? UserPhoto : AddPhoto;
 

@@ -49,9 +49,6 @@ const CreatePostsScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
-
-  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUserId(user.uid); // Set currentUserId here
@@ -64,6 +61,20 @@ const CreatePostsScreen = ({ navigation, route }) => {
       unsubscribe();
     };
   }, [navigation]);
+
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setCurrentUserId(user.uid); // Set currentUserId here
+  //     } else {
+  //       navigation.navigate("Login");
+  //     }
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [navigation]);
 
   const [photoName, setPhotoName] = useState("");
   const [photoGeo, setPhotoGeo] = useState("");

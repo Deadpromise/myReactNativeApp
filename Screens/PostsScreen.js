@@ -12,7 +12,7 @@ import { getUser } from "../redux/auth/selectors";
 import { getItems, getIsPostsLoading } from "../redux/posts/selectors";
 import { auth } from "../config";
 import { onAuthStateChanged } from "firebase/auth";
-import { getAllPosts, getDataFromFirestore } from "../redux/posts/operations";
+import { getAllPosts } from "../redux/posts/operations";
 import styles from "./styles";
 
 import { FontAwesome, Feather } from "@expo/vector-icons";
@@ -28,14 +28,14 @@ const PostsScreen = ({ navigation }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        try {
-          dispatch(getAllPosts());
-        } catch (error) {
-          console.error("Error fetching posts data:", error);
-        }
-        console.log("User is signed in:");
+        // try {
+        //   dispatch(getAllPosts());
+        // } catch (error) {
+        //   console.error("Error fetching posts data:", error);
+        // }
+        // console.log("User is signed in:");
       } else {
-        console.log("User is signed out");
+        // console.log("User is signed out");
         navigation.navigate("Login");
       }
     });
@@ -45,19 +45,27 @@ const PostsScreen = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    try {
+      dispatch(getAllPosts());
+    } catch (error) {
+      console.error("Error fetching posts data:", error);
+    }
+  }, []);
+
   const renderItem = ({ item }) => {
     const { photoTitle, photoUrl, comments, likedBy, ownerId } = item.data;
     const { locationName, locationCoords } = item.data.photoLocation;
     // : { latitude, longitude }
     const { id } = item;
-    console.log(id);
-    console.log(photoTitle);
-    console.log(ownerId);
-    console.log(comments);
-    console.log(likedBy);
-    console.log(photoUrl);
-    console.log(locationName);
-    console.log(locationCoords);
+    // console.log("postID", id);
+    // console.log(photoTitle);
+    // console.log(ownerId);
+    // console.log(comments);
+    // console.log(likedBy);
+    // console.log(photoUrl);
+    // console.log(locationName);
+    // console.log(locationCoords);
     // console.log(longitude);
 
     const commetnsQty = comments.length;
@@ -70,7 +78,7 @@ const PostsScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 console.log("press comm");
-                navigation.navigate("Comments");
+                navigation.navigate("Comments", { id });
               }}
             >
               <FontAwesome

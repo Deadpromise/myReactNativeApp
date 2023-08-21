@@ -9,29 +9,129 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  FlatList,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { auth } from "../config";
+import { onAuthStateChanged } from "firebase/auth";
+import { getPostById, updateComments } from "../redux/posts/operations";
 import { FontAwesome5 } from "@expo/vector-icons";
 import styles from "./styles";
 import Forest from "../images/forest.jpg";
 import UserPhoto from "../images/photo-example.jpg";
+import { getCommentsData } from "../redux/posts/selectors";
 
-const CommentsScreen = () => {
+const CommentsScreen = ({ navigation }) => {
   const [comment, setComment] = useState("");
   const [isFocused1, setIsFocused1] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const commentsData = useSelector(getCommentsData);
+  const { comments, likedBy, ownerId, photoUrl } = commentsData;
+
+  // const [postId, setPostId] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const {
+    params: { id },
+  } = useRoute();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUserId(user.uid);
+        try {
+          dispatch(getPostById(id));
+        } catch (error) {
+          console.error("Error fetching posts data:", error);
+        }
+        // console.log("User is signed in:");
+      } else {
+        // console.log("User is signed out");
+        navigation.navigate("Login");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   setPostId(id);
+  // }, []);
 
   const handleFocus1 = () => {
     setIsFocused1(true);
   };
+  const handleAddComment = async () => {
+    const newComment = {
+      commentDate: Date.now(),
+      commentOwnerId: currentUserId,
+      commentText: comment,
+    };
+    await updateComments(id, newComment);
+    dispatch(getPostById(id));
+    setComment("");
+  };
+
+  const renderItem = ({ item }) => {
+    const { commentDate, commentOwnerId, commentText } = item;
+    // console.log(commentDate);
+    const date = new Date(commentDate);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const formattedDate = new Intl.DateTimeFormat("uk-UA", options).format(
+      date
+    );
+    // console.log(formattedDate);
+
+    const cardStyles =
+      commentOwnerId === currentUserId
+        ? [styles.commentsCardContainer, styles.commentsOwnerCardConatiner]
+        : [styles.commentsCardContainer];
+    const textContainerStyles =
+      commentOwnerId === currentUserId
+        ? [styles.commentsTextContainer, styles.commentsTextOwnerContainer]
+        : [styles.commentsTextContainer];
+    const textDateStyles =
+      commentOwnerId === currentUserId
+        ? [styles.commentsDateText, styles.commentsOwnerDateText]
+        : [styles.commentsDateText];
+
+    return (
+      <View style={cardStyles}>
+        <Image source={UserPhoto} style={styles.commentsAvatar}></Image>
+        <View style={textContainerStyles}>
+          <Text style={styles.commentsText}>{commentText}</Text>
+          <Text style={textDateStyles}>{formattedDate}</Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      {/* <View style={styles.pushBottomWrapper}> */}
-
       <View style={styles.commentsScreenContainer}>
-        <ScrollView style={{ width: 343 }}>
-          <Image source={Forest} style={styles.postsPhoto}></Image>
-          <View
+        <View>
+          <Image
+            source={{ uri: photoUrl }}
+            style={styles.commentsPhoto}
+          ></Image>
+          <FlatList
+            data={comments}
+            keyExtractor={(item) => item.commentDate}
+            renderItem={renderItem}
+          />
+          {/* styles.postsPhoto */}
+          {/* /<View
             style={[
               styles.commentsCardContainer,
               styles.commentsFirstCardContainer,
@@ -112,8 +212,8 @@ const CommentsScreen = () => {
                 09 червня, 2020 | 08:40
               </Text>
             </View>
-          </View>
-        </ScrollView>
+          </View> */}
+        </View>
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
           style={styles.commentInputContainer}
@@ -129,9 +229,7 @@ const CommentsScreen = () => {
           ></TextInput>
           <TouchableOpacity
             style={styles.commentsSendIcon}
-            onPress={() => {
-              console.log("pressen send comm");
-            }}
+            onPress={handleAddComment}
           >
             <FontAwesome5
               name="arrow-circle-up"
@@ -140,8 +238,6 @@ const CommentsScreen = () => {
             />
           </TouchableOpacity>
         </KeyboardAvoidingView>
-        {/* <View style={styles.pushBottomElement}> */}
-        {/* <View style={styles.commentInputContainer}> */}
       </View>
     </TouchableWithoutFeedback>
   );

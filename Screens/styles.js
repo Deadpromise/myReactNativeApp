@@ -308,6 +308,7 @@ const styles = StyleSheet.create({
     width: 343,
     position: "relative",
   },
+  commentsPhoto: { width: 343, height: 240, borderRadius: 8, marginBottom: 8 },
   commentsFirstCardContainer: {
     marginTop: 32,
   },
@@ -352,12 +353,12 @@ const styles = StyleSheet.create({
   },
   commentsOwnerDateText: { textAlign: "left" },
   commentInputContainer: {
-    position: "relative",
+    // position: "relative",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     position: "absolute",
-    bottom: 16,
+    bottom: 20,
   },
   commentsInput: {
     height: 50,

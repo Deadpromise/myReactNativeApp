@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllPosts } from "./operations";
+import { getAllPosts, getPostById } from "./operations";
 
 const initialState = {
   items: [],
+  commentsData: {},
   isPostsLoading: false,
   postsLoadingError: false,
 };
@@ -26,6 +27,9 @@ const postsSlice = createSlice({
       .addCase(getAllPosts.rejected, (state, action) => {
         state.isPostsLoading = false;
         state.postsLoadingError = true;
+      })
+      .addCase(getPostById.fulfilled, (state, action) => {
+        state.commentsData = action.payload;
       });
   },
 });
